@@ -1,7 +1,7 @@
-import './style.css'
+import Alpine from 'alpinejs'
+import { initAudioLens } from './audio-lens'
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = /*html*/`
-  <div>
-   
-  </div>
-`
+window.Alpine = Alpine
+
+initAudioLens()
+Alpine.start()

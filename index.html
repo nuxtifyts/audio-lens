@@ -2,12 +2,72 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + TS</title>
+    <title>Audio Lens</title>
+    <link href="/src/css/style.css" rel="stylesheet" />
   </head>
-  <body>
-    <div id="app"></div>
+
+  <body class="bg-slate-900 text-white flex items-center justify-center h-screen text-center">
+    <div
+      class="flex flex-col items-center gap-4 p-4 bg-gray-950 rounded-lg shadow-md"
+      id="app" 
+      x-data="audioLens"
+    >
+      <h1 class="text-2xl">Add New Voice</h1>
+
+      <div class="flex p-2 gap-2 bg-gray-800 rounded-lg w-100">
+        <button
+          class="text-white font-bold py-2 px-4 rounded cursor-pointer transition-colors duration-300 ease-in-out flex-grow"
+          :class="{ 'bg-blue-900 hover:bg-blue-950': mode === 'upload' }"
+          @click="setUploadMode"
+        >
+          Upload voice
+        </button>
+  
+        <button
+          class="text-white font-bold py-2 px-4 rounded cursor-pointer transition-colors duration-300 ease-in-out flex-grow"
+          :class="{ 'bg-blue-900 hover:bg-blue-950': mode === 'record' }"
+          @click="setRecordMode"
+        >
+          Record voice
+        </button>
+      </div>
+
+      <template x-if="isUploadMode">
+        <label 
+          class="relative outline outline-gray-700 rounded-lg w-full cursor-pointer flex flex-col gap-4 items-center justify-center"
+          :class="{ 'outline-2': fileDraggedWithin}"
+          for="audioLensUploadFiles"
+          :style="{ 'height': '200px' }"
+        >
+          <input
+            class="absolute w-full h-full opacity-0 top-0 left-0 block cursor-pointer "
+            id="audioLensUploadFiles" 
+            type="file"
+            accept="audio/*" 
+            @change="onFileChange"
+            @dragover="onFileDragEnter"
+            @dragleave="onFileDragLeave"
+            @drop="onFileUpload"
+          />
+
+          <img x-show="!fileDraggedWithin" src="/src/icons/upload-file-icon.svg" alt="upload-file-svg-icon">
+          <img x-show="correctFileDraggedIn" src="/src/icons/upload-file-done-icon.svg" alt="upload-file-done-svg-icon">
+          <img x-show="incorrectFileDraggedIn" src="/src/icons/upload-file-refused-icon.svg" alt="upload-file-refused-svg-icon">
+
+          <span x-show="!fileDraggedWithin">Upload file, or drag and drop</span>
+          <span x-show="correctFileDraggedIn">Drop file to upload</span>
+          <span x-show="incorrectFileDraggedIn">Incorrect file type</span>
+        </label>
+      </template>
+
+      <template x-if="isRecordMode">
+        <div>
+          Record
+        </div>
+      </template>
+    </div>
+    
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
