@@ -28,7 +28,7 @@ export function initAudioLens() {
             acceptedFileTypes,
             fileDraggedWithin: false,
             incorrectFileDragged: false,
-            mode: 'upload',
+            mode: 'record',
 
             get isUploadMode(): boolean { return this.mode === 'upload' },
             get isRecordMode(): boolean { return this.mode === 'record' },

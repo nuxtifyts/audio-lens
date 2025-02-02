@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en" class="">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -51,41 +51,75 @@
         </button>
       </div>
 
-      <template x-if="isUploadMode">
-        <label 
-          class="relative outline-gray-300/50 bg-gray-200/50 dark:outline-gray-900 dark:bg-gray-800 rounded-lg w-full cursor-pointer flex flex-col gap-4 items-center justify-center h-40"
-          :class="{
-            'outline': !fileDraggedWithin, 
-            'outline-2': fileDraggedWithin
-          }"
-          for="audioLensUploadFiles"
-        >
-          <input
-            class="absolute w-full h-full opacity-0 top-0 left-0 block cursor-pointer"
-            id="audioLensUploadFiles" 
-            type="file"  
-            accept="audio/*" 
-            @change="onFileChange"
-            @dragover="onFileDragEnter"
-            @dragleave="onFileDragLeave"
-            @drop="onFileUpload"
-          />
+      <div class="flex flex-col w-full h-40">
+        <template x-if="isUploadMode">
+          <label
+            class="relative outline-gray-300/50 bg-gray-200/50 dark:outline-gray-900 dark:bg-gray-800 rounded-lg w-full cursor-pointer flex flex-col gap-4 items-center justify-center h-full"
+            :class="{
+              'outline': !fileDraggedWithin, 
+              'outline-2': fileDraggedWithin
+            }"
+            for="audioLensUploadFiles"
+          >
+            <input
+              class="absolute w-full h-full opacity-0 top-0 left-0 block cursor-pointer"
+              id="audioLensUploadFiles" 
+              type="file"  
+              accept="audio/*" 
+              @change="onFileChange"
+              @dragover="onFileDragEnter"
+              @dragleave="onFileDragLeave"
+              @drop="onFileUpload"
+            />
+  
+            <span x-show="!fileDraggedWithin" class="material-symbols-outlined">cloud_upload</span>
+            <span x-show="correctFileDraggedIn" class="material-symbols-outlined">cloud_done</span>
+            <span x-show="incorrectFileDraggedIn" class="material-symbols-outlined">cloud_alert</span>
+  
+            <span x-show="!fileDraggedWithin">Upload file, or drag and drop</span>
+            <span x-show="correctFileDraggedIn">Drop file to upload</span>
+            <span x-show="incorrectFileDraggedIn">Incorrect file type</span>
+          </label>
+        </template>
+  
+        <template x-if="isRecordMode">
+          <div class="h-full flex flex-col gap-4 items-center justify-center">
+            <div class="relative py-4">
+              <!-- <div class="absolute inset-0 flex items-center justify-center">
+                <div class="w-12 h-12 bg-blue-950 rounded-full animate-ping"></div>
+              </div> -->
 
-          <span x-show="!fileDraggedWithin" class="material-symbols-outlined">cloud_upload</span>
-          <span x-show="correctFileDraggedIn" class="material-symbols-outlined">cloud_done</span>
-          <span x-show="incorrectFileDraggedIn" class="material-symbols-outlined">cloud_alert</span>
+              <div class="w-12 h-12 bg-blue-900 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
+            </div>
 
-          <span x-show="!fileDraggedWithin">Upload file, or drag and drop</span>
-          <span x-show="correctFileDraggedIn">Drop file to upload</span>
-          <span x-show="incorrectFileDraggedIn">Incorrect file type</span>
-        </label>
-      </template>
+            <div class="flex gap-2 items-center">
+              <button
+                class="py-2 px-4 rounded cursor-pointer transition-colors duration-300 ease-in-out bg-blue-900 hover:bg-blue-950 text-white"
+              >
+                Start recording
+              </button>
 
-      <template x-if="isRecordMode">
-        <div>
-          Record
-        </div>
-      </template>
+              <button
+                class="py-2 px-4 rounded cursor-pointer transition-colors duration-300 ease-in-out bg-blue-900 hover:bg-blue-950 text-white"
+              >
+                Pause recording
+              </button>
+
+              <button
+                class="py-2 px-4 rounded cursor-pointer transition-colors duration-300 ease-in-out bg-blue-900 hover:bg-blue-950 text-white"
+              >
+                Resume recording
+              </button>
+  
+              <button
+                class="py-2 px-4 rounded cursor-pointer transition-colors duration-300 ease-in-out bg-blue-900 hover:bg-blue-950 text-white"
+              >
+                Stop recording
+              </button>
+            </div>
+          </div>
+        </template>
+      </div>
 
       <div class="flex flex-col gap-4 w-full border border-gray-300/50 dark:border-gray-900 rounded-lg bg-gray-200/50 dark:bg-gray-800 p-2">
         <div class="flex gap-2 items-center">
