@@ -1,6 +1,7 @@
 declare global {
     namespace AudioLens {
-        type mode = 'upload' | 'record'
+        type Mode = 'upload' | 'record'
+        type RecordState = 'recording' | 'paused' | 'stopped'
     }
 }
 

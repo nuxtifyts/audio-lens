@@ -93,25 +93,29 @@
             </div>
 
             <div class="flex gap-2 items-center">
-              <button
+              <button 
+                x-show="showStartRecordingButton"
                 class="py-2 px-4 rounded cursor-pointer transition-colors duration-300 ease-in-out bg-blue-900 hover:bg-blue-950 text-white"
               >
                 Start recording
               </button>
 
               <button
+                x-show="showPauseRecordingButton"
                 class="py-2 px-4 rounded cursor-pointer transition-colors duration-300 ease-in-out bg-blue-900 hover:bg-blue-950 text-white"
               >
                 Pause recording
               </button>
 
               <button
+                x-show="showResumeRecordingButton"
                 class="py-2 px-4 rounded cursor-pointer transition-colors duration-300 ease-in-out bg-blue-900 hover:bg-blue-950 text-white"
               >
                 Resume recording
               </button>
   
               <button
+                x-show="showStopRecordingButton"
                 class="py-2 px-4 rounded cursor-pointer transition-colors duration-300 ease-in-out bg-blue-900 hover:bg-blue-950 text-white"
               >
                 Stop recording
@@ -121,39 +125,41 @@
         </template>
       </div>
 
-      <div class="flex flex-col gap-4 w-full border border-gray-300/50 dark:border-gray-900 rounded-lg bg-gray-200/50 dark:bg-gray-800 p-2">
-        <div class="flex gap-2 items-center">
-          <div class="flex items-center justify-center w-12 h-12 border border-gray-300/50 dark:border-gray-900 rounded-full">
-            <span class="material-symbols-outlined">mic</span>
-          </div>
-
-          <div class="flex flex-col gap-1 items-start flex-grow dark:text-white">
-            <span class="text-lg">Recording title</span>
-
-            <span class="flex gap-2 items-center">
-              <span class="text-xs">00:28s</span>
-            </span>
-          </div>
-
-          <div class="flex gap-2">
-            <button class="p-2 w-10 h-8 flex items-center justify-center rounded-xl border-1 border-gray-600 text-gray-600 bg-gray-100/50 hover:bg-gray-300/50 dark:border-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white transition-colors duration-300 ease-in-out cursor-pointer">
-              <span class="material-symbols-outlined">play_arrow</span>
-            </button>
-            
-            <button class="p-2 w-10 h-8 flex items-center justify-center rounded-xl border-1 border-gray-600 text-gray-600 bg-gray-100/50 hover:bg-gray-300/50 dark:border-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white transition-colors duration-300 ease-in-out cursor-pointer">
-              <span class="material-symbols-outlined">pause</span>
-            </button>
-
-            <button class="p-2 w-10 h-8 flex items-center justify-center rounded-xl border-1 border-gray-600 text-gray-600 bg-gray-100/50 hover:bg-gray-300/50 dark:border-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white transition-colors duration-300 ease-in-out cursor-pointer">
-              <span class="material-symbols-outlined">stop</span>
-            </button>
-
-            <button class="p-2 w-10 h-8 flex items-center justify-center rounded-xl border-1 border-gray-600 text-gray-600 bg-gray-100/50 hover:bg-gray-300/50 dark:border-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white hover:text-red-600 hover:border-red-600 transition-colors duration-300 ease-in-out cursor-pointer">
-              <span class="material-symbols-outlined">delete</span>
-            </button>
+      <template x-for="file in files">
+        <div class="flex flex-col gap-4 w-full border border-gray-300/50 dark:border-gray-900 rounded-lg bg-gray-200/50 dark:bg-gray-800 p-2">
+          <div class="flex gap-2 items-center">
+            <div class="flex items-center justify-center w-12 h-12 border border-gray-300/50 dark:border-gray-900 rounded-full">
+              <span class="material-symbols-outlined">mic</span>
+            </div>
+  
+            <div class="flex flex-col gap-1 items-start flex-grow dark:text-white">
+              <span class="text-lg">Recording title</span>
+  
+              <span class="flex gap-2 items-center">
+                <span class="text-xs">00:28s</span>
+              </span>
+            </div>
+  
+            <div class="flex gap-2">
+              <button class="p-2 w-10 h-8 flex items-center justify-center rounded-xl border-1 border-gray-600 text-gray-600 bg-gray-100/50 hover:bg-gray-300/50 dark:border-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white transition-colors duration-300 ease-in-out cursor-pointer">
+                <span class="material-symbols-outlined">play_arrow</span>
+              </button>
+              
+              <button class="p-2 w-10 h-8 flex items-center justify-center rounded-xl border-1 border-gray-600 text-gray-600 bg-gray-100/50 hover:bg-gray-300/50 dark:border-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white transition-colors duration-300 ease-in-out cursor-pointer">
+                <span class="material-symbols-outlined">pause</span>
+              </button>
+  
+              <button class="p-2 w-10 h-8 flex items-center justify-center rounded-xl border-1 border-gray-600 text-gray-600 bg-gray-100/50 hover:bg-gray-300/50 dark:border-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white transition-colors duration-300 ease-in-out cursor-pointer">
+                <span class="material-symbols-outlined">stop</span>
+              </button>
+  
+              <button class="p-2 w-10 h-8 flex items-center justify-center rounded-xl border-1 border-gray-600 text-gray-600 bg-gray-100/50 hover:bg-gray-300/50 dark:border-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white hover:text-red-600 hover:border-red-600 transition-colors duration-300 ease-in-out cursor-pointer">
+                <span class="material-symbols-outlined">delete</span>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </template>
     </div>
     <!-- AUDIO LENS COMPONENT END -->
 
