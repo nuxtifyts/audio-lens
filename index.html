@@ -1,32 +1,49 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Audio Lens</title>
     <link href="/src/css/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0&text=cloud_upload,cloud_done,cloud_alert" />
+
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 300,
+        'GRAD' 0,
+        'opsz' 24
+      }
+    </style>
   </head>
 
-  <body class="bg-slate-900 text-white flex items-center justify-center h-screen text-center">
+  <body class="bg-gray-50 dark:bg-slate-900 dark:text-white flex items-center justify-center h-screen text-center">
     <div
-      class="flex flex-col items-center gap-4 p-4 bg-gray-950 rounded-lg shadow-md"
+      class="flex flex-col items-center gap-4 p-4 bg-gray-100 dark:bg-gray-950 rounded-lg shadow-md"
       id="app" 
       x-data="audioLens"
     >
       <h1 class="text-2xl">Add New Voice</h1>
 
-      <div class="flex p-2 gap-2 bg-gray-800 rounded-lg w-100">
+      <div class="flex bg-gray-200 dark:bg-gray-800 rounded-lg w-100">
         <button
-          class="text-white font-bold py-2 px-4 rounded cursor-pointer transition-colors duration-300 ease-in-out flex-grow"
-          :class="{ 'bg-blue-900 hover:bg-blue-950': mode === 'upload' }"
+          class="py-2 px-4 rounded cursor-pointer transition-colors duration-300 ease-in-out flex-grow"
+          :class="{
+            'bg-blue-900 hover:bg-blue-950 text-white': isUploadMode,
+            'bg-gray-200/50 hover:bg-gray-300/50 border border-gray-300/50 dark:border-gray-900 text-dark dark:bg-gray-800 dark:hover:bg-gray-900': isRecordMode
+          }"
           @click="setUploadMode"
         >
           Upload voice
         </button>
   
         <button
-          class="text-white font-bold py-2 px-4 rounded cursor-pointer transition-colors duration-300 ease-in-out flex-grow"
-          :class="{ 'bg-blue-900 hover:bg-blue-950': mode === 'record' }"
+          class="py-2 px-4 rounded cursor-pointer transition-colors duration-300 ease-in-out flex-grow"
+          :class="{
+            'bg-blue-900 hover:bg-blue-950 text-white': isRecordMode,
+            'bg-gray-200/50 hover:bg-gray-300/50 border border-gray-300/50 dark:border-gray-900 text-dark dark:bg-gray-800 dark:hover:bg-gray-900': isUploadMode
+          }"
           @click="setRecordMode"
         >
           Record voice
@@ -35,15 +52,14 @@
 
       <template x-if="isUploadMode">
         <label 
-          class="relative outline outline-gray-700 rounded-lg w-full cursor-pointer flex flex-col gap-4 items-center justify-center"
+          class="relative outline outline-gray-300/50 bg-gray-200/50 dark:outline-gray-900 dark:bg-gray-800 rounded-lg w-full cursor-pointer flex flex-col gap-4 items-center justify-center h-40"
           :class="{ 'outline-2': fileDraggedWithin}"
           for="audioLensUploadFiles"
-          :style="{ 'height': '200px' }"
         >
           <input
-            class="absolute w-full h-full opacity-0 top-0 left-0 block cursor-pointer "
+            class="absolute w-full h-full opacity-0 top-0 left-0 block cursor-pointer"
             id="audioLensUploadFiles" 
-            type="file"
+            type="file"  
             accept="audio/*" 
             @change="onFileChange"
             @dragover="onFileDragEnter"
@@ -51,9 +67,9 @@
             @drop="onFileUpload"
           />
 
-          <img x-show="!fileDraggedWithin" src="/src/icons/upload-file-icon.svg" alt="upload-file-svg-icon">
-          <img x-show="correctFileDraggedIn" src="/src/icons/upload-file-done-icon.svg" alt="upload-file-done-svg-icon">
-          <img x-show="incorrectFileDraggedIn" src="/src/icons/upload-file-refused-icon.svg" alt="upload-file-refused-svg-icon">
+          <span x-show="!fileDraggedWithin" class="material-symbols-outlined">cloud_upload</span>
+          <span x-show="correctFileDraggedIn" class="material-symbols-outlined">cloud_done</span>
+          <span x-show="incorrectFileDraggedIn" class="material-symbols-outlined">cloud_alert</span>
 
           <span x-show="!fileDraggedWithin">Upload file, or drag and drop</span>
           <span x-show="correctFileDraggedIn">Drop file to upload</span>
@@ -67,6 +83,19 @@
         </div>
       </template>
     </div>
+
+    <button 
+      class="fixed bottom-4 right-4 p-2 bg-gray-800 hover:bg-gray-950 dark:bg-gray-600 dark:hover:bg-gray-400 text-white transition-colors duration-300 ease-in-out cursor-pointer rounded-lg"
+      onclick="
+        this.innerHTML = document.querySelector('html').classList.contains('dark') ? 'Toggle Light Mode' : 'Toggle Dark Mode'; 
+        document.querySelectorAll('img[x-show]').forEach(
+          img => img.src = document.querySelector('html').classList.contains('dark') ? img.src.replace('dark', 'light') : img.src.replace('light', 'dark')
+        )
+        document.querySelector('html').classList.toggle('dark');
+      "
+    >
+      Toggle Dark Mode
+    </button>
     
     <script type="module" src="/src/main.ts"></script>
   </body>
