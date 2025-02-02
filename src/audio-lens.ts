@@ -43,18 +43,10 @@ export function initAudioLens() {
             get isUploadMode(): boolean { return this.mode === 'upload' },
             get isRecordMode(): boolean { return this.mode === 'record' },
 
-            get showStartRecordingButton(): boolean {
-                return this.isRecordMode && this.recordingState === 'stopped'
-            },
-            get showPauseRecordingButton(): boolean {
-                return this.isRecordMode && this.recordingState === 'recording'
-            },
-            get showResumeRecordingButton(): boolean {
-                return this.isRecordMode && this.recordingState === 'paused'
-            },
-            get showStopRecordingButton(): boolean {
-                return this.isRecordMode && this.recordingState !== 'stopped'
-            },
+            get showStartRecordingButton(): boolean { return this.isRecordMode && this.recordingState === 'stopped' },
+            get showPauseRecordingButton(): boolean { return this.isRecordMode && this.recordingState === 'recording' },
+            get showResumeRecordingButton(): boolean { return this.isRecordMode && this.recordingState === 'paused' },
+            get showStopRecordingButton(): boolean { return this.isRecordMode && this.recordingState !== 'stopped' },
             
             get correctFileDraggedIn(): boolean { return this.fileDraggedWithin && !this.incorrectFileDragged },
             get incorrectFileDraggedIn(): boolean { return this.fileDraggedWithin && this.incorrectFileDragged },
