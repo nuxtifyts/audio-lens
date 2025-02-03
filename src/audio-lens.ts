@@ -22,6 +22,11 @@ interface AudioLensComponent {
     setUploadMode: () => void
     setRecordMode: () => void
 
+    startRecording: () => void
+    pauseRecording: () => void
+    resumeRecording: () => void
+    stopRecording: () => void
+
     onFileChange: (event: Event) => void
     onFileDragEnter: (event: DragEvent) => void
     onFileDragLeave: (event: DragEvent) => void
@@ -52,8 +57,12 @@ export function initAudioLens() {
             get incorrectFileDraggedIn(): boolean { return this.fileDraggedWithin && this.incorrectFileDragged },
 
             setUploadMode(): void { this.mode = 'upload' },
-
             setRecordMode(): void { this.mode = 'record' },
+
+            startRecording(): void { this.recordingState = 'recording' },
+            pauseRecording(): void { this.recordingState = 'paused' },
+            resumeRecording(): void { this.recordingState = 'recording' },
+            stopRecording(): void { this.recordingState = 'stopped' },
 
             onFileChange(event): void {
                 const target = event.target as HTMLInputElement

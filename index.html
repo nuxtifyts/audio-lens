@@ -95,6 +95,7 @@
             <div class="flex gap-2 items-center">
               <button 
                 x-show="showStartRecordingButton"
+                @click="startRecording"
                 class="py-2 px-4 rounded cursor-pointer transition-colors duration-300 ease-in-out bg-blue-900 hover:bg-blue-950 text-white"
               >
                 Start recording
@@ -102,6 +103,7 @@
 
               <button
                 x-show="showPauseRecordingButton"
+                @click="pauseRecording"
                 class="py-2 px-4 rounded cursor-pointer transition-colors duration-300 ease-in-out bg-blue-900 hover:bg-blue-950 text-white"
               >
                 Pause recording
@@ -109,6 +111,7 @@
 
               <button
                 x-show="showResumeRecordingButton"
+                @click="resumeRecording"
                 class="py-2 px-4 rounded cursor-pointer transition-colors duration-300 ease-in-out bg-blue-900 hover:bg-blue-950 text-white"
               >
                 Resume recording
@@ -116,6 +119,7 @@
   
               <button
                 x-show="showStopRecordingButton"
+                @click="stopRecording"
                 class="py-2 px-4 rounded cursor-pointer transition-colors duration-300 ease-in-out bg-blue-900 hover:bg-blue-950 text-white"
               >
                 Stop recording
