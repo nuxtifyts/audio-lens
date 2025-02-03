@@ -1,7 +1,7 @@
 import Alpine from 'alpinejs'
-import { initAudioLens } from './audio-lens'
+import { initAudioLensComponent } from './audio-lens'
 
 window.Alpine = Alpine
 
-initAudioLens()
+initAudioLensComponent()
 Alpine.start()
