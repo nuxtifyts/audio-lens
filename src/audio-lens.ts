@@ -13,7 +13,6 @@ interface AudioLensComponent {
     /** Also State, but Intended to be used via recorder function */
     recorder: MediaRecorder | null
 
-
     /** Getters */
     isUploadMode: boolean
     isRecordMode: boolean
