@@ -11,12 +11,13 @@ interface AudioLensComponent {
     audioData: Array<AudioLens.AudioDataObject>
 
     /** Also State, but Intended to be used via recorder function */
-    _recorder: MediaRecorder | null
+    recorder: MediaRecorder | null
 
 
     /** Getters */
     isUploadMode: boolean
     isRecordMode: boolean
+    isRecording: boolean
 
     showStartRecordingButton: boolean
     showPauseRecordingButton: boolean
@@ -40,7 +41,8 @@ interface AudioLensComponent {
     onFileDragLeave: (event: DragEvent) => void
     onFileUpload: (event: DragEvent) => void
 
-    recorder: () => Promise<MediaRecorder>
+    initRecorder: () => Promise<MediaRecorder>
+    deleteAudioData: (index: number) => void
 }
 
 export const initAudioLensComponent = () => document.addEventListener('alpine:init', () => {
@@ -56,10 +58,11 @@ export const initAudioLensComponent = () => document.addEventListener('alpine:in
         mode: 'record',
         recordingState: 'stopped',
 
-        _recorder: null,
+        recorder: null,
 
         get isUploadMode(): boolean { return this.mode === 'upload' },
         get isRecordMode(): boolean { return this.mode === 'record' },
+        get isRecording(): boolean { return this.recordingState === 'recording' },
 
         get showStartRecordingButton(): boolean { return this.isRecordMode && this.recordingState === 'stopped' },
         get showPauseRecordingButton(): boolean { return this.isRecordMode && this.recordingState === 'recording' },
@@ -73,21 +76,21 @@ export const initAudioLensComponent = () => document.addEventListener('alpine:in
         setRecordMode(): void { this.mode = 'record' },
 
         async startRecording(): Promise<void> {
-            (await this.recorder()).start()
+            (await this.initRecorder()).start()
             this.recordingState = 'recording'
         },
 
         async pauseRecording(): Promise<void> {
-            (await this.recorder()).pause()
+            this.recorder!.pause()
             this.recordingState = 'paused' 
         },
 
         async resumeRecording(): Promise<void> {
-            (await this.recorder()).resume()
+            this.recorder!.resume()
             this.recordingState = 'recording' 
         },
         async stopRecording(): Promise<void> {
-            (await this.recorder()).stop()
+            this.recorder!.stop()
             this.recordingState = 'stopped'
 
             this.audioChunks = []
@@ -132,21 +135,17 @@ export const initAudioLensComponent = () => document.addEventListener('alpine:in
             console.log(event)
         },
 
-        async recorder(): Promise<MediaRecorder>{
+        async initRecorder(): Promise<MediaRecorder>{
             const stream: MediaStream = await navigator.mediaDevices.getUserMedia({audio: true})
 
-            if (this._recorder) {
-                return this._recorder
-            }
-
-            this._recorder = new MediaRecorder(stream)
+            this.recorder = new MediaRecorder(stream)
             
-            this._recorder.ondataavailable = event => {
+            this.recorder.ondataavailable = event => {
                 this.audioChunks.push(event.data)
             }
 
-            this._recorder.onstop = async () => {
-                this._recorder!.stream.getTracks().forEach(track => track.stop())
+            this.recorder.onstop = async () => {
+                this.recorder!.stream.getTracks().forEach(track => track.stop())
 
                 const audioType = this.acceptedFileTypes[0]
                 const blob = new Blob(this.audioChunks, {type: audioType})
@@ -161,7 +160,11 @@ export const initAudioLensComponent = () => document.addEventListener('alpine:in
                 console.log(this.audioData)
             }
 
-            return this._recorder
+            return this.recorder
+        },
+
+        deleteAudioData(index: number): void {
+            this.audioData.splice(index, 1)
         }
     }))
 })

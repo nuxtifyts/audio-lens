@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -85,9 +85,9 @@
         <template x-if="isRecordMode">
           <div class="h-full flex flex-col gap-4 items-center justify-center">
             <div class="relative py-8">
-              <!-- <div class="absolute inset-0 flex items-center justify-center">
+              <div x-show="isRecording" class="absolute inset-0 flex items-center justify-center">
                 <div class="w-12 h-12 bg-blue-950 rounded-full animate-ping"></div>
-              </div> -->
+              </div>
 
               <div class="w-12 h-12 bg-blue-900 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
             </div>
@@ -129,7 +129,7 @@
         </template>
       </div>
 
-      <template x-for="audio in audioData">
+      <template x-for="(audio, index) in audioData">
         <div class="flex flex-col gap-4 w-full border border-gray-300/50 dark:border-gray-900 rounded-lg bg-gray-200/50 dark:bg-gray-800 p-2">
           <div class="flex gap-2 items-center">
             <div class="flex items-center justify-center w-12 h-12 border border-gray-300/50 dark:border-gray-900 rounded-full">
@@ -157,7 +157,10 @@
                 <span class="material-symbols-outlined">stop</span>
               </button>
   
-              <button class="p-2 w-10 h-8 flex items-center justify-center rounded-xl border-1 border-gray-600 text-gray-600 bg-gray-100/50 hover:bg-gray-300/50 dark:border-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white hover:text-red-600 hover:border-red-600 transition-colors duration-300 ease-in-out cursor-pointer">
+              <button
+                @click="deleteAudioData(index)" 
+                class="p-2 w-10 h-8 flex items-center justify-center rounded-xl border-1 border-gray-600 text-gray-600 bg-gray-100/50 hover:bg-gray-300/50 dark:border-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white hover:text-red-600 hover:border-red-600 transition-colors duration-300 ease-in-out cursor-pointer"
+              >
                 <span class="material-symbols-outlined">delete</span>
               </button>
             </div>
