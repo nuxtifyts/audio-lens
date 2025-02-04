@@ -145,15 +145,27 @@
             </div>
   
             <div class="flex gap-2">
-              <button class="p-2 w-10 h-8 flex items-center justify-center rounded-xl border-1 border-gray-600 text-gray-600 bg-gray-100/50 hover:bg-gray-300/50 dark:border-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white transition-colors duration-300 ease-in-out cursor-pointer">
+              <button
+                x-show="isAudioPlayerStopped || isAudioPlayerPaused"
+                @click="playAudioData(index)"
+                class="p-2 w-10 h-8 flex items-center justify-center rounded-xl border-1 border-gray-600 text-gray-600 bg-gray-100/50 hover:bg-gray-300/50 dark:border-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white transition-colors duration-300 ease-in-out cursor-pointer"
+              >
                 <span class="material-symbols-outlined">play_arrow</span>
               </button>
               
-              <button class="p-2 w-10 h-8 flex items-center justify-center rounded-xl border-1 border-gray-600 text-gray-600 bg-gray-100/50 hover:bg-gray-300/50 dark:border-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white transition-colors duration-300 ease-in-out cursor-pointer">
+              <button
+                x-show="isAudioPlayerRunning"
+                @click="pauseAudioData(index)"
+                class="p-2 w-10 h-8 flex items-center justify-center rounded-xl border-1 border-gray-600 text-gray-600 bg-gray-100/50 hover:bg-gray-300/50 dark:border-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white transition-colors duration-300 ease-in-out cursor-pointer"
+              >
                 <span class="material-symbols-outlined">pause</span>
               </button>
   
-              <button class="p-2 w-10 h-8 flex items-center justify-center rounded-xl border-1 border-gray-600 text-gray-600 bg-gray-100/50 hover:bg-gray-300/50 dark:border-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white transition-colors duration-300 ease-in-out cursor-pointer">
+              <button
+                x-show="isAudioPlayerRunning || isAudioPlayerPaused"
+                @click="stopAudioData(index)"
+                class="p-2 w-10 h-8 flex items-center justify-center rounded-xl border-1 border-gray-600 text-gray-600 bg-gray-100/50 hover:bg-gray-300/50 dark:border-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white transition-colors duration-300 ease-in-out cursor-pointer"
+              >
                 <span class="material-symbols-outlined">stop</span>
               </button>
   
@@ -167,6 +179,8 @@
           </div>
         </div>
       </template>
+
+      <audio x-ref="audioEl"></audio>
     </div>
     <!-- AUDIO LENS COMPONENT END -->
 

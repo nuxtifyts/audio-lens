@@ -5,10 +5,15 @@ interface AudioLensComponent {
     acceptedFileTypes: Array<string>
     fileDraggedWithin: boolean
     incorrectFileDragged: boolean
-    mode: AudioLens.Mode
-    recordingState: AudioLens.RecordState
     audioChunks: Array<Blob>
     audioData: Array<AudioLens.AudioDataObject>
+    
+    mode: AudioLens.Mode
+    recordingState: AudioLens.RecordState
+    audioPlayerState: AudioLens.AudioPlayerState
+
+    /** Refs */
+    audioEl: HTMLAudioElement
 
     /** Also State, but Intended to be used via recorder function */
     recorder: MediaRecorder | null
@@ -17,6 +22,10 @@ interface AudioLensComponent {
     isUploadMode: boolean
     isRecordMode: boolean
     isRecording: boolean
+
+    isAudioPlayerRunning: boolean
+    isAudioPlayerPaused: boolean
+    isAudioPlayerStopped: boolean
 
     showStartRecordingButton: boolean
     showPauseRecordingButton: boolean
@@ -42,6 +51,9 @@ interface AudioLensComponent {
 
     initRecorder: () => Promise<MediaRecorder>
     deleteAudioData: (index: number) => void
+    playAudioData: (index: number) => Promise<void>
+    pauseAudioData: () => void
+    stopAudioData: () => void
 }
 
 export const initAudioLensComponent = () => document.addEventListener('alpine:init', () => {
@@ -52,16 +64,27 @@ export const initAudioLensComponent = () => document.addEventListener('alpine:in
         fileDraggedWithin: false,
         incorrectFileDragged: false,
         audioChunks: [],
-        audioData: [],
+        audioData: [
+            {
+                title: 'test.wav',
+                blob: new Blob(),
+                url: ''
+            }
+        ],
 
         mode: 'record',
         recordingState: 'stopped',
+        audioPlayerState: 'stopped',
 
         recorder: null,
 
         get isUploadMode(): boolean { return this.mode === 'upload' },
         get isRecordMode(): boolean { return this.mode === 'record' },
         get isRecording(): boolean { return this.recordingState === 'recording' },
+
+        get isAudioPlayerRunning(): boolean { return this.audioPlayerState === 'playing' },
+        get isAudioPlayerPaused(): boolean { return this.audioPlayerState === 'paused' },
+        get isAudioPlayerStopped(): boolean { return this.audioPlayerState === 'stopped' },
 
         get showStartRecordingButton(): boolean { return this.isRecordMode && this.recordingState === 'stopped' },
         get showPauseRecordingButton(): boolean { return this.isRecordMode && this.recordingState === 'recording' },
@@ -70,6 +93,8 @@ export const initAudioLensComponent = () => document.addEventListener('alpine:in
         
         get correctFileDraggedIn(): boolean { return this.fileDraggedWithin && !this.incorrectFileDragged },
         get incorrectFileDraggedIn(): boolean { return this.fileDraggedWithin && this.incorrectFileDragged },
+
+        get audioEl(): HTMLAudioElement { return this.$refs.audioEl as HTMLAudioElement },
 
         setUploadMode(): void { this.mode = 'upload' },
         setRecordMode(): void { this.mode = 'record' },
@@ -164,6 +189,26 @@ export const initAudioLensComponent = () => document.addEventListener('alpine:in
 
         deleteAudioData(index: number): void {
             this.audioData.splice(index, 1)
+        },
+
+        async playAudioData(index: number): Promise<void> {
+            if (this.audioPlayerState === 'stopped') {
+                this.audioEl.src = this.audioData[index].url
+            }
+
+            await this.audioEl.play()
+            this.audioPlayerState = 'playing'
+        },
+
+        pauseAudioData(): void {
+            this.audioEl.pause()
+            this.audioPlayerState = 'paused'
+        },
+
+        stopAudioData(): void {
+            this.audioEl.pause()
+            this.audioEl.currentTime = 0
+            this.audioPlayerState = 'stopped'
         }
     }))
 })
